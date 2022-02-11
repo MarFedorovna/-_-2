@@ -30,3 +30,36 @@ row_values = ['высокий', 1]
 row_columns = ['alert_group', 'importance']
 row = pd.Series(data=row_values, index=row_columns)
 print(alert_group_importance(row))
+
+Задача 2.
+Создайте новый столбец importance_status и сохраните в нём результаты работы функции alert_group_importance(). Закомментируйте вывод предыдущей задачи и напечатайте обновлённый датасет на экране.
+Подсказка
+Примените метод apply(alert_group_importance, axis=1) к датасету support_log_grouped.
+Результат сохраните в столбце: support_log_grouped['importance_status']
+Решение:
+
+import pandas as pd
+support_log_grouped = pd.read_csv('/datasets/support_log_grouped.csv')
+ 
+def alert_group_importance(row):
+    if row['alert_group'] == 'средний':
+        if row['importance'] == 1:
+            return 'обратить внимание'
+    if row['alert_group'] == 'высокий':
+        if row['importance'] == 1:
+            return 'высокий риск'
+    if row['alert_group'] == 'критичный':
+        if row['importance'] == 1:
+            return 'блокер'
+    return 'в порядке очереди'
+ 
+row_values = ['высокий', 1]
+row_columns = ['alert_group', 'importance']
+row = pd.Series(data=row_values, index=row_columns)
+#print(alert_group_importance(row))
+ 
+support_log_grouped['importance_status'] = alert_group_importance(row)
+ 
+support_log_grouped['importance_status'] = support_log_grouped.apply(alert_group_importance, axis=1)
+
+print(support_log_grouped)
